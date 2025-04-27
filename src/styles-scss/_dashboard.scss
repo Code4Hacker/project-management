@@ -1,0 +1,128 @@
+.with-side-layout {
+    display: grid;
+    grid-template-columns: 300px auto;
+    min-height: 100vh;
+
+    >* {
+        position: relative;
+        height: 100%;
+    }
+
+    &> :nth-child(1) {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+
+        .title {
+            font-weight: 600;
+            padding: 12px;
+
+            span {
+                font-weight: 300;
+                font-size: medium;
+                margin-top: 0px;
+                position: absolute;
+            }
+        }
+
+        .menu-i {
+
+            padding: 12px;
+            font-size: small;
+        }
+
+        ul {
+            list-style: none;
+            padding: 12px;
+            padding: 0;
+
+            li {
+                padding: 12px;
+
+                * {
+                    text-decoration: none;
+                    color: var(--primary-color);
+                }
+
+                &.active {
+                    background-color: rgba(0, 0, 0, 0.176);
+                }
+            }
+        }
+    }
+
+    &> :nth-child(2) {
+        height: 100vh;
+        overflow-x: scroll;
+        background-color: var(--tertial-color);
+
+        .main-page {
+            padding: 0px 12px 0px 12px;
+        }
+    }
+
+    .main-page {
+        margin: 24px;
+
+        .flex_summary {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+
+            .circle {
+                height: 50px;
+                top: 8px;
+                width: 50px;
+                opacity: .6;
+                border-radius: 50px;
+                position: relative;
+
+                svg {
+                    text-align: center;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    fill: var(--primary-color);
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            .card-summary {
+                background-color: var(--primary-color);
+                box-shadow: 0px 0px 12px 12px rgba(0, 0, 0, 0.021);
+                padding: 24px;
+                min-width: 300px;
+                display: flex;
+                gap: 12px;
+                border-radius: 8px;
+            }
+        }
+
+        .flex-flow-two {
+        margin-top: 8px;
+            display: grid;
+            grid-template-columns: 20px auto;
+
+
+            .flex {
+                display: grid;
+                grid-template-columns: auto auto;
+                color: gray;
+                font-size: small;
+                & >:nth-child(2){
+                text-align: end;
+                }
+            }
+        }
+        .timeline {
+        padding: 10px;
+            .dot {
+                width: 10px;
+                height: 10px;
+                position: relative;
+                border-radius: 50px;
+                background-color: var(--color);
+                top: 10px;
+            }
+        }
+    }
+}

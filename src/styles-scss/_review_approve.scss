@@ -1,0 +1,31 @@
+.reviews{
+    .flex > *{
+        min-width: 120px;
+        
+    }
+    .flex > :nth-child(2){
+        margin-left: 12px !important;
+        
+    }
+    .review_card{
+        border: 1px solid rgba(128, 128, 128, 0.285);
+        padding: 12px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin: 8px;
+        border-radius: 8px;
+        textarea{
+            width: 100%;
+            margin-top: 2px;
+            &::placeholder{
+                font-family: 'Courier New', Courier, monospace;
+                font-size: small;
+            }
+        }
+        button{
+            padding: 5px;
+            min-width: 100px;
+            margin-top: 4px;
+        }
+    }
+}

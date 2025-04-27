@@ -1,0 +1,15 @@
+.assigning{
+    .grid-flow-item{
+        position: relative;
+        > *{
+            margin-left: 24px;
+        }
+        button{
+            width: 95%;
+            margin-bottom: 20px;
+        }
+        select{
+            width: 95%;
+          }
+    }
+}
