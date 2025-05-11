@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TopNav from '../components/top-nav/TopNav'
 import { Check, Files, Folder, Folder2, Folder2Open, Speedometer } from 'react-bootstrap-icons'
 import ApexChart from '../components/ProjectGraph'
+import useFetch from '../hooks/useFetch'
 
 const summaryList = [
     {
@@ -59,6 +60,14 @@ const summaryList = [
     },
     ]
 const Dashboard = ({ children }) => {
+    const [dashboard, setDashboard] = useState({
+        totalProjects:0,
+        totalUsers:0
+    });
+    const { fetchData, loading } = useFetch();
+    const getUser = async () => {
+        const {} = await fetchData({reqType: "get", api:"/dashboard"})
+    }
     return (
         <div className="homepage with-side-layout">
             <div className="">
@@ -96,7 +105,7 @@ const Dashboard = ({ children }) => {
                         <h5>Timeline Schedules</h5>
                         <div className="timeline">
                             {
-                                meetingSummary.map((i, k) => <div className='flex-flow-two'>
+                                meetingSummary.map((i, k) => <div className='flex-flow-two' key={k}>
                                     <div className="dot" style={{
                                         "--color": i.status === "completed" ? "royalblue" : i.status === "cancelled" ? "red" : "yellow"
                                     }}></div>

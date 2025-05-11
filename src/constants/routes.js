@@ -6,3 +6,5 @@ export const REVIEW_AND_APPROVE = "/review-and-approve";
 export const PROJECT_DETAILS = "/project-details";
 export const GENERATE_REPORT = "/generate-report";
 export const TEAM_LEADER_DASHBOARD = "/team-leader-dashboard";
+export const VIEW_RESOURCES = "/view-resources";
+export const UPDATE_TASK = "/update-task";

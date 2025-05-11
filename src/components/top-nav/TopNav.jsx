@@ -31,12 +31,12 @@ const TopNav = () => {
             </Button>
             <Nav>
 
-            <NavDropdown title={`${person.first_name} ${person.last_name}`} id="basic-nav-dropdown">
+            <NavDropdown title={`${person.firstName} ${person.lastName}`} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Email<br />
-              <span className='caption-text'>{person.email}</span></NavDropdown.Item>
+              <span className='caption-text'>{person.username}</span></NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Role <br />
-                <span className='caption-text'>{person.role}</span>
+                <span className='caption-text'>{person.userType}</span>
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Username <br/>
               <span className='caption-text'>{person.username}</span></NavDropdown.Item>

@@ -3,57 +3,54 @@ import { useForm } from 'react-hook-form';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { HOME, SIGN_UP } from '../constants/routes';
-import { baseURL } from '../baseURL';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import useFetch from '../hooks/useFetch';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const { fetchData, loading } = useFetch();
 
-  
-  const onSubmit = async (data) => {
-    const loadingToast = toast.loading('Creating account...');
+  const onSubmit = async (input) => {
+    const loadingToast = toast.loading('Logging in...');
     
     try {
-  
-      const response = await axios.post(`${baseURL}/login/`, {
-        username_or_email: data.email,
-        password: data.password
-      }, {
-        headers: {
-          'accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+      const { code, message, data } = await fetchData({
+        reqType: "post",
+        api: "/login",
+        body: {
+          username: input.email,
+          password: input.password
+        }
       });
-      
-      toast.dismiss(loadingToast);
-      toast.success('Sign In successfully!');
-      console.log(response.data.user)
-      localStorage.setItem("user", JSON.stringify(response.data.user))
 
-      navigate(HOME);
+      if(code !== 9000) {
+        toast.dismiss(loadingToast);
+        toast.error(message);
+      } else {
+        toast.dismiss(loadingToast);
+        toast.success(message);
+        
+        localStorage.setItem("user", JSON.stringify(data));
+        navigate(HOME);
+      }
     } catch (error) {
       toast.dismiss(loadingToast);
       
-      // Log the full error response for debugging
       console.error('Full error response:', error);
       
       if (error.response) {
-        // Server responded with error status
         if (error.response.data) {
-          // Handle validation errors
           if (typeof error.response.data === 'object') {
-            // Convert object errors to string
             const errorMessages = Object.entries(error.response.data)
               .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(' ') : errors}`)
               .join('\n');
             toast.error(errorMessages);
           } else {
-            toast.error(error.response.data.detail || 'Registration failed');
+            toast.error(error.response.data.detail || 'Login failed');
           }
         } else {
-          toast.error('Registration failed. Please try again.');
+          toast.error('Login failed. Please try again.');
         }
       } else if (error.request) {
         toast.error('No response from server. Please check your connection.');
@@ -62,12 +59,14 @@ const Login = () => {
       }
     }
   };
+
   useEffect(() => {
-    const user = window.localStorage.getItem("user");
-    if(user !== null){
-      navigate(HOME)
+    const user = localStorage.getItem("user");
+    if(user !== null) {
+      navigate(HOME);
     }
-  });
+  }, [navigate]);
+
   return (
     <Container fluid className="auth-container">
       <Row className="justify-content-center align-items-center min-vh-100">
@@ -77,9 +76,9 @@ const Login = () => {
               <h2 className="text-center mb-4">Welcome Back</h2>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Enter Email / Username</Form.Label>
                   <Form.Control
-                    type="email"
+                    type="text"
                     {...register('email', { required: 'Email is required' })}
                     isInvalid={!!errors.email}
                     placeholder="Enter email"
@@ -106,15 +105,14 @@ const Login = () => {
                   )}
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100 mb-3">
-                  Sign In
+                <Button 
+                  variant="primary" 
+                  type="submit" 
+                  className="w-100 mb-3"
+                  disabled={loading}
+                >
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </Button>
-
-                <div className="text-center mt-3">
-                  <Link to="/forgot-password" className="text-decoration-none">
-                    Forgot Password?
-                  </Link>
-                </div>
               </Form>
             </Card.Body>
           </Card>

@@ -7,6 +7,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { baseURL } from '../baseURL';
+import useFetch from '../hooks/useFetch';
 
 const Signup = () => {
   const { 
@@ -16,31 +17,32 @@ const Signup = () => {
     watch 
   } = useForm();
   const navigate = useNavigate();
+  const { fetchData, loading } = useFetch();
   const password = watch('password', '');
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (obj) => {
     const loadingToast = toast.loading('Creating account...');
     
     try {
-  
-      const response = await axios.post(`${baseURL}/register/`, {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        confirm_Password: data.confirmPassword, 
-        first_name: data.firstName,
-        last_name: data.lastName
-      }, {
-        headers: {
-          'accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+      const { code, message, data } = await fetchData({
+        reqType: "post",
+        api: "/register",
+        body: {
+          username: obj.username,
+          firstName: obj.firstName,
+          lastName: obj.lastName,
+          userRole: "MANAGER",
+          password: obj.password
+        }
       });
-      
-      toast.dismiss(loadingToast);
-      toast.success('Account created successfully! You can now sign in.');
-      navigate(SIGN_IN);
-      console.log(response)
+      if(code !== 9000) {
+        toast.dismiss(loadingToast);
+        toast.error(message);
+      } else {
+        toast.dismiss(loadingToast);
+        toast.success(message);
+        navigate(SIGN_IN);
+      }
     } catch (error) {
       toast.dismiss(loadingToast);
       
@@ -126,7 +128,7 @@ const Signup = () => {
                   </Col>
                 </Row>
 
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
@@ -153,13 +155,13 @@ const Signup = () => {
                       {errors.username.message}
                     </Form.Control.Feedback>
                   )}
-                </Form.Group>
+                </Form.Group> */}
 
                 <Form.Group className="mb-3">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
                     type="email"
-                    {...register('email', { 
+                    {...register('username', { 
                       required: 'Email is required',
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -200,25 +202,6 @@ const Signup = () => {
                   {errors.password && (
                     <Form.Control.Feedback type="invalid">
                       {errors.password.message}
-                    </Form.Control.Feedback>
-                  )}
-                </Form.Group>
-
-                <Form.Group className="mb-4">
-                  <Form.Label>Confirm Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    {...register('confirmPassword', { 
-                      required: 'Please confirm your password',
-                      validate: value => 
-                        value === password || 'Passwords do not match'
-                    })}
-                    isInvalid={!!errors.confirmPassword}
-                    placeholder="Confirm password"
-                  />
-                  {errors.confirmPassword && (
-                    <Form.Control.Feedback type="invalid">
-                      {errors.confirmPassword.message}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { ASSIGN_NEW_PROJECT, GENERATE_REPORT, HOME, PROJECT_DETAILS, REVIEW_AND_APPROVE, SIGN_IN, TEAM_LEADER_DASHBOARD } from '../constants/routes'
-const menuList = [
+import { ASSIGN_NEW_PROJECT, GENERATE_REPORT, HOME, PROJECT_DETAILS, REVIEW_AND_APPROVE, SIGN_IN, TEAM_LEADER_DASHBOARD, UPDATE_TASK, VIEW_RESOURCES } from '../constants/routes'
+const SideBar = () => {
+  let store  = window.localStorage.getItem("user");
+  let role = "";
+  if(store) role = (JSON.parse(store)).userType;
+
+const menuList = role === "SUPER_ADMIN"?[
   {
     title:"Home",
     path:HOME
@@ -26,8 +31,57 @@ const menuList = [
     title:"Team Leader Dashboard",
     path:TEAM_LEADER_DASHBOARD
   },
-]
-const SideBar = () => {
+]: role === "MANAGER"?[
+  {
+    title:"Home",
+    path:HOME
+  },
+  {
+    title:"View Resources",
+    path:VIEW_RESOURCES
+  },
+  {
+    title:" Update Task Status",
+    path:UPDATE_TASK
+  },
+  {
+    title:"Request for Help or Clarification",
+    path:PROJECT_DETAILS
+  },
+  {
+    title:"View Project Timeline",
+    path:GENERATE_REPORT
+  },
+  {
+    title:"Submit a Completed Task",
+    path:TEAM_LEADER_DASHBOARD
+  },
+]:[
+  {
+    title:"Home",
+    path:HOME
+  },
+  {
+    title:"Assign New Project",
+    path:ASSIGN_NEW_PROJECT
+  },
+  {
+    title:"Review and Approve",
+    path:REVIEW_AND_APPROVE
+  },
+  {
+    title:"Project Details",
+    path:PROJECT_DETAILS
+  },
+  {
+    title:"Generate Report",
+    path:GENERATE_REPORT
+  },
+  {
+    title:"Team Leader Dashboard",
+    path:TEAM_LEADER_DASHBOARD
+  },
+];
   const nav = useNavigate();
   let [activeRoute, setActiveRoute ] = useState(HOME);
   let params = useLocation();
@@ -35,6 +89,7 @@ const SideBar = () => {
   useEffect(() => {
     setActiveRoute(params.pathname);
   })
+  useEffect(() => {}, []);
   return (
     <div>
       <h2 className='title'>Project <br /> <span>Management System</span></h2>

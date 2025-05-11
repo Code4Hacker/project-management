@@ -1,6 +1,6 @@
 import React from 'react'
-import TopNav from '../components/top-nav/TopNav'
-const ReviewApprove = ({ children }) => {
+import TopNav from '../../components/top-nav/TopNav'
+const UpdateTask = ({ children }) => {
     return (
         <div className="reviews with-side-layout">
             <div className="">
@@ -9,40 +9,32 @@ const ReviewApprove = ({ children }) => {
 
             <div>
                 <TopNav />
-                <div className="main-page">
+                <div className="main-page update">
+                    <h2><b>Update Task Status</b></h2>
                     <div className="grid-flow" style={{
                         "--template": "auto"
                     }}>
                         <div className="grid-flow-item">
                             <br />
-                            <h4><b>Review & Approve</b></h4>
-                            <br />
-                            <div className="flex">
-                                <select name="" id="">
-                                    <option value="">Filter by Project</option>
-                                </select>
-                                <select name="" id="">
-                                    <option value="">Filter by Status</option>
-                                </select>
-                            </div>
+                            <h4><b>Update Your Task Status</b></h4>
                             <br />
                             {
 
                                 [1, 2, 3, 5, 6, 7, 8].map((i, k) => <div className='review_card' key={k}>
-                                    <h6><b>Website Redesign - Login Page</b></h6>
+                                    <h4><b>HomePage Design</b></h4>
                                     <p className='gray-text'>
-                                        <b>Submited By:</b> Alice Johnson <br />
-                                        <b>Status:</b> Pending
+                                        <b>Category:</b> Documantation <br />
+                                        <b>Uploaded:</b> April 1, 2025
                                     </p>
                                     <span>Comment</span> <br />
                                     <textarea name="" id="" placeholder='Enter project description'></textarea>
                                     <br />
                                     <div className="flex">
                                         <button className='btn-primary' style={{
-                                            backgroundColor:"rgb(43 176 79)"
+                                            backgroundColor: "rgb(43 176 79)"
                                         }}>Approve</button>
                                         <button className='btn-primary' style={{
-                                            backgroundColor:"rgb(225 61 79)"
+                                            backgroundColor: "rgb(225 61 79)"
                                         }}>Reject</button>
                                     </div>
                                 </div>)
@@ -55,4 +47,4 @@ const ReviewApprove = ({ children }) => {
     )
 }
 
-export default ReviewApprove
+export default UpdateTask

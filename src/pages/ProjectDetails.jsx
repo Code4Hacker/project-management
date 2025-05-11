@@ -3,30 +3,32 @@ import TopNav from '../components/top-nav/TopNav';
 import { ProgressBar } from 'react-bootstrap';
 import ProjectCard from '../components/ProjectCard';
 import axios from 'axios';
+import useFetch from '../hooks/useFetch';
 
 const ProjectDetails = ({ children }) => {
     const [projects, setProjects] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { fetchData, loading } = useFetch();
 
     useEffect(() => {
+
         const fetchProjects = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/projects/');
-                console.log(response.data)
-                setProjects(response.data);
-                setLoading(false);
+    
+                const { code, message, content } = await fetchData({
+                    reqType: "get",
+                    api: "/projects"
+                });
+                console.log(content);
+                setProjects(content);
             } catch (err) {
                 setError(err.message);
-                setLoading(false);
                 console.error('Error fetching projects:', err);
             }
         };
-
         fetchProjects();
     }, []);
 
-    if (loading) return <div>Loading projects...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -70,7 +72,7 @@ const ProjectDetails = ({ children }) => {
                                 </div>
                             </div>
                             {projects.map((project) => (
-                                <ProjectCard 
+                                <ProjectCard
                                     key={project.id}
                                     project={project}
                                 />

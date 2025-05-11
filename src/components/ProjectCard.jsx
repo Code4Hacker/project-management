@@ -6,7 +6,8 @@ const ProjectCard = ({ project }) => {
     
     const progress = project.days_until_deadline 
         ? Math.max(0, 100 - (project.days_until_deadline / 30 * 100)) 
-        : 0;
+        : Math.random(90, 900);
+        console.log(project)
     const formatDate = (dateString) => {
         if (!dateString) return 'No deadline';
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -15,13 +16,13 @@ const ProjectCard = ({ project }) => {
     return (
         <div className="project_grid item">
             <div className="">
-                <p>{project.Project_title || 'Untitled Project'}</p>
+                <p>{project.name || 'Untitled Project'}</p>
             </div>
             <div className="">
                 <p>{project.status_display || project.status || 'No status'}</p>
             </div>
             <div className="">
-                <p>{project.team_lead?.username || 'No team leader'}</p>
+                <p>{project.team_lead_id != null ? project.team_lead_id?.firstName + " " + project.team_lead_id?.lastName : 'No team leader'}</p>
             </div>
             <div className="">
                 <ProgressBar 
@@ -46,11 +47,11 @@ const ProjectCard = ({ project }) => {
                 >
                     {show ? "Collapse View" : "View Details"}
                 </button>
-            </div>
+            </div> 
             
             {show && (
                 <div className="full-details">
-                    <p><b>Project:</b> {project.Project_title || 'Untitled Project'}</p>
+                    <p><b>Project:</b> {project.name || 'Untitled Project'}</p>
                     <p><b>Deadline:</b> {formatDate(project.deadline)}</p>
                     <p><b>Description:</b> {project.description || 'No description available'}</p>
                     
@@ -64,11 +65,12 @@ const ProjectCard = ({ project }) => {
 
                     <p><b>Team Members</b></p>
                     <ul>
-                        {project.team_lead && (
-                            <li>{project.team_lead.username} (Team Lead)</li>
+                        {project.team_lead_id && (
+                            <li>{project.team_lead_id?.firstName + " " + project.team_lead_id?.lastName} (Team Lead)</li>
                         )}
-                        <li>Jasmin Adam</li>
-                        <li>Kelvin Grayson</li>
+                        {
+                            project.members.map((item, key)  => <li key={key}>Jasmin Adam</li>)
+                        }
                     </ul>
 
                     <p><b>Project Created:</b> {formatDate(project.created_at)}</p>

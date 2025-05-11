@@ -1,0 +1,13 @@
+.resources{
+    display: grid;
+    grid-template-columns: auto 120px;
+    button{
+        position: relative;
+        height: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    h4{
+        color: var( --secondary-color);
+    }
+}
